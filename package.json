@@ -1,0 +1,26 @@
+{
+  "name": "ww-wra-google",
+  "version": "1.0.0",
+  "description": "Whatsapp Web bot to query and get results to and from WolframAlpha API and Google search.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ameybhavsar24/ww-wra-google.git"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "wolframalpha",
+    "google",
+    "api"
+  ],
+  "author": "Amey Bhavsar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ameybhavsar24/ww-wra-google/issues"
+  },
+  "homepage": "https://github.com/ameybhavsar24/ww-wra-google#readme"
+}
