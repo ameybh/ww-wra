@@ -4,8 +4,7 @@
   "description": "Whatsapp Web bot to query and get results to and from WolframAlpha API and Google search.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
