@@ -1,11 +1,26 @@
 require('dotenv').config()
+
+const fs = require('fs')
+
 const qrcode = require('qrcode-terminal')
 const { Client } = require('whatsapp-web.js')
 
 const appid = process.env.APPID
-const WolframAlphaAPI = require('./WolframAlphaAPI.js')
+const WolframAlphaAPI = require('./lib/WolframAlphaAPI.js')
 let wraAPI = WolframAlphaAPI(appid)
+const handleImage = require('./handlers/handleImage')
+
+// all bot commands start like "!b ..."
 const invokeKey = '!b'
+
+// Path where the session data will be stored
+const SESSION_FILE_PATH = './session.json'
+
+// Load the session data if it has been previously saved
+let sessionData
+if (fs.existsSync(SESSION_FILE_PATH)) {
+  sessionData = require(SESSION_FILE_PATH)
+}
 
 // open whatsapp web in a headless browser (no gui)
 const puppeteerOptions = {
@@ -16,11 +31,22 @@ const puppeteerOptions = {
 // initialize client object
 const client = new Client({
   puppeteer: puppeteerOptions,
+  session: sessionData,
 })
 
 // prints QR code to console when received
 client.on('qr', (qr) => {
   qrcode.generate(qr, { small: true })
+})
+
+// Save session values to the file upon successful auth
+client.on('authenticated', (session) => {
+  sessionData = session
+  fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
+    if (err) {
+      console.error(err)
+    }
+  })
 })
 
 client.on('ready', () => {
@@ -41,26 +67,5 @@ const messageHandler = (message) => {
   console.log(`Querying result for ${query}`)
   handleImage(message, query, wraAPI)
 }
-const parseDataUrl = require('parse-data-url')
-const { MessageMedia } = require('whatsapp-web.js')
-const handleImage = (message, text, wraAPI) => {
-  try {
-    console.log('Image request')
-    // send the rest of the message to Wolfram|Alpha API
-    wraAPI
-      .getSimple({
-        i: text,
-        timeout: 5,
-      })
-      .then((res) => {
-        const parsed = parseDataUrl(res)
-        message.reply(new MessageMedia(parsed.contentType, parsed.data))
-      })
-      .catch((err) => {
-        message.reply(String(err))
-      })
-  } catch (err) {
-    console.log(err)
-  }
-}
+
 client.initialize()
