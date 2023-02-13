@@ -27,6 +27,6 @@
     "dotenv": "^14.3.0",
     "parse-data-url": "^4.0.1",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.15.2"
+    "whatsapp-web.js": "^1.19.4"
   }
 }
